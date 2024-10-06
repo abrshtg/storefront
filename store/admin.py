@@ -9,10 +9,17 @@ from store.models import Customer, Product, Order, Collection
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ["first_name", "last_name", "membership"]
+    list_display = ["first_name", "last_name", "membership", "order_count"]
     list_editable = ["membership"]
     ordering = ["first_name", "last_name"]
     list_per_page = 10
+
+    @admin.display(ordering="order_count")
+    def order_count(self, customer):
+        return customer.order_count
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).annotate(order_count=Count("order"))
 
 
 @admin.register(Product)
