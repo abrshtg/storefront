@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from store.models import Customer, Product
+from store.models import Customer, Product, Order
 
 
 @admin.register(Customer)
@@ -28,3 +28,18 @@ class ProductAdmin(admin.ModelAdmin):
         if product.inventory > 10:
             return "HIGH"
         return "LOW"
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ["customer_full_name", "placed_at", "payment_status"]
+    list_editable = ["payment_status"]
+    list_per_page = 10
+    list_select_related = ["customer"]
+
+    @admin.display(ordering="customer__first_name")
+    def customer_full_name(self, order):
+        first_name = order.customer.first_name
+        last_name = order.customer.last_name
+
+        return f"{first_name} {last_name}"
