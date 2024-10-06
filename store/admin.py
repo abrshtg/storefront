@@ -13,6 +13,7 @@ class CustomerAdmin(admin.ModelAdmin):
     list_editable = ["membership"]
     ordering = ["first_name", "last_name"]
     list_per_page = 10
+    search_fields = ["first_name__istartswith", "last_name__istartswith"]
 
     @admin.display(ordering="order_count")
     def order_count(self, customer):
