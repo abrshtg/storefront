@@ -16,7 +16,9 @@ class CustomerAdmin(admin.ModelAdmin):
 
     @admin.display(ordering="order_count")
     def order_count(self, customer):
-        return customer.order_count
+        url = reverse("admin:store_order_changelist")
+        query = f"?{urlencode({'customer__id': customer.id})}"
+        return format_html(f"<a href={url + query}>{customer.order_count}</a>")
 
     def get_queryset(self, request):
         return super().get_queryset(request).annotate(order_count=Count("order"))
