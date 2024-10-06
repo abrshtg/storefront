@@ -70,6 +70,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
+    autocomplete_fields = ["customer"]
     list_display = ["customer_full_name", "placed_at", "payment_status"]
     list_editable = ["payment_status"]
     list_per_page = 10
