@@ -49,6 +49,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_select_related = [
         "collection"
     ]  # here we should load 'collection' to prevent extra query for related field.
+    prepopulated_fields = {"slug": ["title"]}
 
     def collection_title(self, product):
         return product.collection.title
