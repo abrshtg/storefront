@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from store.models import Customer, Product, Order
+from store.models import Customer, Product, Order, Collection
 
 
 @admin.register(Customer)
@@ -43,3 +43,8 @@ class OrderAdmin(admin.ModelAdmin):
         last_name = order.customer.last_name
 
         return f"{first_name} {last_name}"
+
+
+@admin.register(Collection)
+class CollectionAdmin(admin.ModelAdmin):
+    list_display = ["title"]
