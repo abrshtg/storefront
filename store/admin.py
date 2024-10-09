@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.http import urlencode
 
-from store.models import Customer, Product, Order, Collection
+from store.models import Customer, Product, Order, Collection, OrderItem
 
 
 class InventoryFilter(admin.SimpleListFilter):
@@ -50,6 +50,7 @@ class ProductAdmin(admin.ModelAdmin):
         "collection"
     ]  # here we should load 'collection' to prevent extra query for related field.
     prepopulated_fields = {"slug": ["title"]}
+    search_fields = ["title", "collection_title"]
 
     def collection_title(self, product):
         return product.collection.title
@@ -68,9 +69,16 @@ class ProductAdmin(admin.ModelAdmin):
         )
 
 
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    autocomplete_fields = ["product"]
+    extra = 1
+
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     autocomplete_fields = ["customer"]
+    inlines = [OrderItemInline]
     list_display = ["customer_full_name", "placed_at", "payment_status"]
     list_editable = ["payment_status"]
     list_per_page = 10
