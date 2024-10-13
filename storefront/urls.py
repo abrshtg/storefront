@@ -21,6 +21,7 @@ from django.urls import path, include
 
 from storefront.settings import DEBUG
 
+admin.site.site_header = "Abrsh Store"
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("playground/", include("playground.urls")),
